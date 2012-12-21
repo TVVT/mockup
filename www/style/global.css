@@ -49,3 +49,12 @@ sub,sup{font-size: 12px;}
 	background-repeat: no-repeat;
 	background-position: center center;
 }
+
+.preview{
+	width: 320px;
+	height: 480px;
+	position: fixed;
+	top:100px;
+	left: 0;
+	background: #f3f3f3;
+}

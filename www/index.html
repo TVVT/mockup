@@ -7,13 +7,13 @@
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <title>手机mockup原型制作</title>
+        <title>mockup for ios mobile</title>
         <link href="/favicon.ico" rel="shortcut icon">
         <link rel="stylesheet" type="text/css" href="style/global.css" />
     </head>
     <body>
         <header>
-            <h1>mockups for ios mobile<sup>beta</sup></h1>
+            <h1>mockup for ios mobile<sup>beta</sup></h1>
         </header>
         <div class="main" id="main">
             <input type="button" id="add" value='add a page'>
@@ -21,6 +21,9 @@
             <canvas id="canvas"></canvas>
         </div>
 
+        <div class="preview" id="preview">
+            preview..
+        </div>
 
         <div class="newPage" id="newPage" >
             <div class="con">
@@ -48,6 +51,8 @@
         var _canvas = doc.getElementById('canvas');
         var Pages = [];
 
+        var pagePath = [];
+
         _add.addEventListener('click',function(){
             _newPage.classList.add('show');
             _newPage.classList.remove('hide');
@@ -63,9 +68,9 @@
             _canvas.height = _main.clientHeight;
         }
 
-
         initCanvas = function(){
             resizeCanvas();
+            var _ctx = _canvas.getContext('2d');
         }
 
         drawFile = function(file){
