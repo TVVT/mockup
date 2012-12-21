@@ -21,11 +21,11 @@
             <canvas id="canvas"></canvas>
         </div>
 
-        <div class="preview" id="preview">
+        <div class="preview hide" id="preview"> 
             preview..
         </div>
 
-        <div class="newPage" id="newPage" >
+        <div class="newPage hide" id="newPage" >
             <div class="con">
                 <h4>new page</h4>
                 <div class="dragArea" id="dragArea">
@@ -34,99 +34,11 @@
                 </div>
 
                 <div class="btns">
-                    <input type="button" id="newPageFinish" value="finish"> 
+                    <input type="button" id="newPageFinish" value="ok"> 
                 </div>
             </div>
         </div>
         <footer>&copy;eizia 2012</footer>
+        <script src="script/library/sea.js" data-main="./script/index"></script>
     </body>
-
-    <script type="text/javascript">
-        var doc = document;
-        var _add = doc.getElementById('add');
-        var _newPage = doc.getElementById('newPage');
-        var _dragArea = doc.getElementById('dragArea');
-        var _newPageFinish = doc.getElementById('newPageFinish');
-        var _main = doc.getElementById('main');
-        var _canvas = doc.getElementById('canvas');
-        var Pages = [];
-
-        var pagePath = [];
-
-        _add.addEventListener('click',function(){
-            _newPage.classList.add('show');
-            _newPage.classList.remove('hide');
-        });
-
-        _newPageFinish.addEventListener('click',function(){
-            _newPage.classList.remove('show');
-            _newPage.classList.add('hide');
-        });
-
-        resizeCanvas = function(){
-            _canvas.width = _main.clientWidth;
-            _canvas.height = _main.clientHeight;
-        }
-
-        initCanvas = function(){
-            resizeCanvas();
-            var _ctx = _canvas.getContext('2d');
-        }
-
-        drawFile = function(file){
-            var src = window.webkitURL.createObjectURL(file);
-            var _img = new Image();
-            _img.src = src;
-            _img.onload = function(){
-                var _w = _img.width;
-                if(_w !== 320){
-                    alert('please cut your image to 320px;');
-                    return false;
-                }else{
-                    _dragArea.style.border = '';
-                    _dragArea.innerHTML = '';
-                    _dragArea.style.backgroundImage = 'url(' + src +')';
-                }
-            }
-        };
-
-        _dragArea.addEventListener('dblclick',function(){
-            var _input = doc.createElement('input');
-            _input.setAttribute('type','file');
-            _input.setAttribute('accept','image/*');
-            _input.click();
-            _input.addEventListener('change',function(e){
-                var file = _input.files[0];
-                drawFile(file);
-            });
-        });
-
-        _dragArea.addEventListener('dragenter', function(e) {
-            e.preventDefault();
-            this.style.border = '1px solid red';
-        }, false); 
-        _dragArea.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.style.border = '';
-        }, false);
-        _dragArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-        }, false);
-        _dragArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            var file = e.dataTransfer.files[0];
-            var type = file.type;
-            if(type.match('image')){
-                drawFile(file);
-            }else{
-                alert('please drag a image!');
-            }
-        }, false);
-
-
-
-        initCanvas();
-
-
-    </script>
 </html>
