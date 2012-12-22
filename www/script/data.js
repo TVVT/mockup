@@ -35,14 +35,33 @@ define(function(require,exports){
 		}
 	};
 
+	//通过id删除页面。
+	//todo 删除页面的时候 要找到关联button 并删除。
+	exports.removeButton = function(page,button){
+		var index;
+		for(var n = page.buttons.length-1;n>=0;n--){
+			var el = page.buttons[n];
+			if(el === button){
+				index = n;
+				break;
+			}
+		}
+		if(index !== undefined){
+			page.buttons.splice(index,1);
+			PageObj.stamp = Date.now();
+		}
+	};
+
+
+
 	exports.changeCurrent = function(obj){
 		for(var name in obj){
 			current[name] = obj[name];
 		}
 	};
 
-	exports.addPageButton = function(id,sx,sy,w,h){
-		var page = exports.getPageById(id);
+	exports.addPageButton = function(page,sx,sy,w,h){
+		// var page = exports.getPageById(id);
 		if(!page){return false;}
 		page.buttons = page.buttons || [];
 		var button = {};
@@ -64,6 +83,11 @@ define(function(require,exports){
 		}
 
 		page.buttons.push(button);
+		PageObj.stamp = Date.now();
+	};
+
+	exports.linkButton = function(button,page){
+		button.link = page.id;
 		PageObj.stamp = Date.now();
 	};
 

@@ -58,18 +58,20 @@ define(function(require,exports) {
 
 	exports.render = function(){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
-		var selectedPage;
+		var hoverPages = [];
 		data.PageObj.pages.forEach(function(el,index){
 			if(el.x === undefined){el.x = 10;}
 			if(el.y === undefined){el.y = 30;}
-			if(!el.selected){
+			if(!el.hover){
 				exports._drawPage(el);
 			}else{
-				selectedPage = el;
+				hoverPages.push(el);
 			}
 		});
-		if(selectedPage){
-			exports._drawPage(selectedPage);
+		if(hoverPages){
+			hoverPages.forEach(function(_page){
+				exports._drawPage(_page);
+			});
 		}
 		if(data.PageObj.pages.length > 0){
 			exports._drawArrow(0,0,data.PageObj.pages[0].x+data.PageObj.pages[0].w/2,data.PageObj.pages[0].y);
@@ -90,7 +92,7 @@ define(function(require,exports) {
 		ctx.fillRect(page.x,page.y,page.w,titleHeight);
 		ctx.restore();
 
-		if(page.selected){
+		if(page.hover){
 			ctx.strokeStyle = 'red';
 		}
 		ctx.lineWidth = 1;
@@ -100,6 +102,12 @@ define(function(require,exports) {
 		if(page.buttons){
 			page.buttons.forEach(function(btn){
 				exports._drawButton(page.x+btn.x,page.y+btn.y+titleHeight,btn.w,btn.h);
+				if(btn.link){
+					var _page = data.getPageById(btn.link);
+					if(_page){
+						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2);
+					}
+				}
 			});
 		}
 	};
@@ -131,6 +139,7 @@ define(function(require,exports) {
 
 	//鼠标开始事件。
 	var GotPage;
+	var GotButton;
 	var GotPageStartX,GotPageStartY;
 	var startX,starY;
 	var moveAction;
@@ -142,13 +151,16 @@ define(function(require,exports) {
 			GotPageStartY = GotPage.y;
 			startX = x;
 			startY = y;
+			GotButton = exports.gotButton(GotPage,x,y);
 			if(y - GotPageStartY < 20 ){
 				moveMode = 'drag';
 				canvas.style['cursor'] = 'move';
+				GotPage.hover = true;
+			}else if(!!GotButton){
+				moveMode = 'linkButton';
 			}else{
 				moveMode = 'addButton';
 			}
-			GotPage.selected = true;
 			data.PageObj.stamp = Date.now();
 		}
 	};
@@ -168,6 +180,15 @@ define(function(require,exports) {
 				lastedMoveY = y;
 				exports.render();
 				exports._drawButton(startX,startY,x-startX,y-startY);
+			}else if(moveMode == 'linkButton'){
+				lastedMoveX = x;
+				lastedMoveY = y;
+				var _page = exports.gotPage(x,y);
+				if(_page && _page.id !== GotPage.id){
+					_page.hover = true;
+				}
+				exports.render();
+				exports._drawArrow(startX,startY,x,y);
 			}
 		}
 	};
@@ -175,8 +196,13 @@ define(function(require,exports) {
 	exports.dbclick = function(x,y){
 		var page = exports.gotPage(x,y);
 		if(!!page){
-			var id = page.id;
-			data.removePage(id);
+			var btn = exports.gotButton(page,x,y);
+			if(!!btn){
+				data.removeButton(page,btn);
+			}else{
+				var id = page.id;
+				data.removePage(id);
+			}
 		}
 	};
 
@@ -184,16 +210,25 @@ define(function(require,exports) {
 	exports.end = function(){
 		if(!!GotPage && startX && startY){
 			if(moveMode == 'addButton' && lastedMoveX && lastedMoveY){
-				data.addPageButton(GotPage.id,startX,startY-20,lastedMoveX-startX,lastedMoveY-startY);
+				data.addPageButton(GotPage,startX,startY-20,lastedMoveX-startX,lastedMoveY-startY);
+			}else if(moveMode == 'linkButton' && lastedMoveX && lastedMoveY){
+				var _page = exports.gotPage(lastedMoveX,lastedMoveY);
+				if(!!_page){
+					data.linkButton(GotButton,_page);
+				}
 			}
-			GotPage.selected = false;
 			GotPage = null;
+			GotButton = null;
 			startX = null;
 			startY = null;
 			GotPageStartX = null;
 			GotPageStartY = null;
 			lastedMoveX = null;
 			lastedMoveY = null;
+
+			data.PageObj.pages.forEach(function(el){
+				el.hover = false;
+			});
 
 			data.PageObj.stamp = Date.now();
 			moveMode = null;
@@ -214,7 +249,18 @@ define(function(require,exports) {
 		return page;
 	};
 
-
+	exports.gotButton = function(page,x,y){
+		if(!page.buttons){return false;}
+		var button;
+		for(var i = page.buttons.length - 1; i>=0;i--){
+			var el = page.buttons[i];
+			if(x > page.x + el.x && x < page.x + el.x + el.w && y > page.y + el.y && y < page.y + el.y + el.h+20){
+				button = el;
+				break;
+			}
+		}
+		return button;
+	};
 
 
 });
