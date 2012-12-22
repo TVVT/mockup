@@ -58,17 +58,37 @@ define(function(require,exports) {
 
 	exports.render = function(){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
+		var selectedPage;
 		data.PageObj.pages.forEach(function(el){
-			if(el.x === undefined){el.x = 10;}
-			if(el.y === undefined){el.y = 10;}
-			ctx.drawImage(el.img,el.x,el.y);
+			if(el.x === undefined){el.x = 0;}
+			if(el.y === undefined){el.y = 0;}
+			if(!el.selected){
+				exports._drawPage(el);
+			}else{
+				selectedPage = el;
+			}
 		});
+		if(selectedPage){
+			exports._drawPage(selectedPage);
+		}
+	};
+
+	//draw a page.
+	exports._drawPage = function(page){
+		var titleHeight = 20;
+		ctx.save()
+		ctx.fillStyle = '#f3f3f3';
+		ctx.fillRect(page.x,page.y,page.w,titleHeight);
+		ctx.drawImage(page.img,page.x,page.y + titleHeight);
+		ctx.strokeRect(page.x,page.y,page.w,page.h+titleHeight);
+		ctx.restore();
 	};
 
 	//鼠标开始事件。
 	var GotPage;
 	var GotPageStartX,GotPageStartY;
 	var startX,starY;
+	var moveAction;
 	exports.start = function(e,x,y){
 		GotPage = exports.gotPage(x,y);
 		if(!!GotPage){
@@ -76,25 +96,33 @@ define(function(require,exports) {
 			GotPageStartY = GotPage.y;
 			startX = x;
 			startY = y;
+			GotPage.selected = true;
+			data.PageObj.stamp = Date.now();
 		}
 	};
 
 	//鼠标移动事件。
 	exports.move = function(e,dir,disX,disY,x,y){
 		if(!!GotPage && startX && startY){
-			GotPage.x = GotPageStartX + (x-startX);
-			GotPage.y = GotPageStartY + (y-startY);
+			var newX = GotPageStartX + (x-startX) > 0 ? GotPageStartX + (x-startX) : 0;
+			var newY = GotPageStartY + (y-startY) > 0 ? GotPageStartY + (y-startY) : 0;
+			GotPage.x = newX;
+			GotPage.y = newY;
 			data.PageObj.stamp = Date.now();
 		}
 	};
 
 	//end
 	exports.end = function(){
-		GotPage = null;
-		startX = null;
-		startY = null;
-		GotPageStartX = null;
-		GotPageStartY = null;
+		if(!!GotPage && startX && startY){
+			GotPage.selected = false;
+			GotPage = null;
+			startX = null;
+			startY = null;
+			GotPageStartX = null;
+			GotPageStartY = null;
+			data.PageObj.stamp = Date.now();
+		}
 	};
 
 	//监测是否获取到了页面。

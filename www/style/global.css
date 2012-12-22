@@ -30,6 +30,7 @@ sub,sup{font-size: 12px;}
 	display: inline-block;
 	min-height: 480px;
 	box-shadow: 0 0 30px #999;
+	background: #fff;
 }
 
 .newPage .dragArea{

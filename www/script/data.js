@@ -1,3 +1,6 @@
+//data.js 存放页面的数据。不能调用其他模块
+//当data的值发生变化时，需要改变时间戳。
+
 define(function(require,exports){
 	var PageObj = {};
 	PageObj.pages = [];
