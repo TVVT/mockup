@@ -115,6 +115,9 @@ define(function(require,exports){
             move : function(e,dir,disX,disY,x,y){
                 cvs.move(e,dir,disX,disY,x,y);
             },
+            dbclick : function(x,y){
+                cvs.dbclick(x,y);
+            },
             end : function(){
                 cvs.end();
                 // exports._end();

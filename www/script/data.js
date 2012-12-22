@@ -19,16 +19,17 @@ define(function(require,exports){
 		PageObj.stamp = Date.now();
 	};
 
+	//通过id删除页面。
 	exports.removePage = function(id){
 		var index;
-		for(var n = Pages.length-1;n>=0;n--){
-			var el = Pages[n];
+		for(var n = PageObj.pages.length-1;n>=0;n--){
+			var el = PageObj.pages[n];
 			if(el.id === id){
 				index = n;
 				break;
 			}
 		}
-		if(index){
+		if(index !== undefined){
 			PageObj.pages.splice(index,1);
 			PageObj.stamp = Date.now();
 		}
@@ -38,6 +39,45 @@ define(function(require,exports){
 		for(var name in obj){
 			current[name] = obj[name];
 		}
+	};
+
+	exports.addPageButton = function(id,sx,sy,w,h){
+		var page = exports.getPageById(id);
+		if(!page){return false;}
+		page.buttons = page.buttons || [];
+		var button = {};
+
+		if( w > 0 ){
+			button.w = Math.min(w,(page.x + page.w - sx));
+			button.x = sx - page.x;
+		}else{
+			button.w = Math.abs(Math.max(w,(page.x-sx)));
+			button.x = Math.max(sx - button.w - page.x,0);
+		}
+
+		if(h > 0){
+			button.h = Math.min(h,(page.y + page.h - sy));
+			button.y = sy - page.y;
+		}else{
+			button.h = Math.abs(Math.max(h,(page.y-sy)));
+			button.y = Math.max(sy - button.h - page.y,0);
+		}
+
+		page.buttons.push(button);
+		PageObj.stamp = Date.now();
+	};
+
+
+	exports.getPageById = function(id){
+		var page;
+		for(var n = PageObj.pages.length-1;n>=0;n--){
+			var el = PageObj.pages[n];
+			if(el.id === id){
+				page = el;
+				break;
+			}
+		}
+		return page;
 	};
 
 	exports.PageObj = PageObj;
