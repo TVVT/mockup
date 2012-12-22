@@ -59,9 +59,61 @@ define(function(require,exports) {
 	exports.render = function(){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		data.PageObj.pages.forEach(function(el){
-			ctx.drawImage(el.img,0,0);
+			if(el.x === undefined){el.x = 10;}
+			if(el.y === undefined){el.y = 10;}
+			ctx.drawImage(el.img,el.x,el.y);
 		});
 	};
+
+	//鼠标开始事件。
+	var GotPage;
+	var GotPageStartX,GotPageStartY;
+	var startX,starY;
+	exports.start = function(e,x,y){
+		GotPage = exports.gotPage(x,y);
+		if(!!GotPage){
+			GotPageStartX = GotPage.x;
+			GotPageStartY = GotPage.y;
+			startX = x;
+			startY = y;
+		}
+	};
+
+	//鼠标移动事件。
+	exports.move = function(e,dir,disX,disY,x,y){
+		if(!!GotPage && startX && startY){
+			GotPage.x = GotPageStartX + (x-startX);
+			GotPage.y = GotPageStartY + (y-startY);
+			data.PageObj.stamp = Date.now();
+		}
+	};
+
+	//end
+	exports.end = function(){
+		GotPage = null;
+		startX = null;
+		startY = null;
+		GotPageStartX = null;
+		GotPageStartY = null;
+	};
+
+	//监测是否获取到了页面。
+	exports.gotPage = function(x,y){
+		var page;
+		for(var i=data.PageObj.pages.length - 1; i >=0; i--){
+			var el = data.PageObj.pages[i];
+			if(x > el.x && x < el.x + el.w && y > el.y && y < el.y + el.h){
+				page = el;
+				break;
+			}
+		}
+		return page;
+	};
+
+
+
+
+
 
 });
 

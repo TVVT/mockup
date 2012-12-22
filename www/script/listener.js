@@ -1,16 +1,18 @@
 define(function(require,exports){
+    touch = require('touch');
     var data = require('./data');
 	var ui = require('./ui');
+    var cvs = require('./cvs');
 	var doc = document;
 	var FU = doc.getElementById('dragArea');
 
     var objectURL;
 
     // var window.URL.revokeObjectURL(objectURL);
-
 	exports.init = function(){
 		exports._initFileEvent();
 		exports._initBtnEvents();
+        exports._initCanvasEvents();
 	};
 
 	exports.addBtnEvent = function(query,fun,type){
@@ -93,5 +95,37 @@ define(function(require,exports){
             }
         }, false);
 	};
+
+
+    exports._initCanvasEvents = function(){
+        var canvas = document.getElementById('canvas');
+
+        var canvasMove = function(e,dir,disX,disY,x,y){
+            console.log(x);
+        };
+
+        touch({
+            element : canvas,
+            click : function(x,y){
+                // exports._click(x,y);
+            },
+            start : function(e,x,y){
+                cvs.start(e,x,y);
+            },
+            move : function(e,dir,disX,disY,x,y){
+                cvs.move(e,dir,disX,disY,x,y);
+            },
+            end : function(){
+                cvs.end();
+                // exports._end();
+            },
+            startZoom : function(){
+                // exports.startZoom();
+            },
+            zoom : function(e,sp1,sp2,mp1,mp2){
+                // exports.zoom(e,sp1,sp2,mp1,mp2);
+            }
+        });
+    };
 
 });
