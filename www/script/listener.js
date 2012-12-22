@@ -39,13 +39,14 @@ define(function(require,exports){
 		if(!FU){return false;}
 
 		var drawFile = function(file){
-            objectURL && window.webkitURL.revokeObjectURL(objectURL);
-            console.log(objectURL);
+            objectURL && window.webkitURL.revokeObjectURL(objectURL); //将之前的从内存中清空掉。
             objectURL = window.webkitURL.createObjectURL(file);
+            
             var _img = new Image();
             _img.src = objectURL;
             _img.onload = function(){
                 var _w = _img.width;
+                var _h = _img.height;
                 if(_w !== 320){
                     alert('please cut your image to 320px;');
                     return false;
@@ -53,6 +54,8 @@ define(function(require,exports){
                     FU.style.border = '';
                     ui.changeInner('#dragArea','');
                     FU.style.backgroundImage = 'url(' + objectURL +')';
+                    var id = Date.now();
+                    data.changeCurrent({'id':id,'file':file,'img':_img,'h':_h,'w':_w});
                 }
             }
 		};

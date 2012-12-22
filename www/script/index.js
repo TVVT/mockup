@@ -16,8 +16,11 @@ seajs.use('index.js',function(index){
 define(function(require,exports){
     var cvs = require('./cvs');
     var listener = require('./listener');
+
+
     exports.init = function(){
         listener.init();
+        cvs.init();
     };
 
 
