@@ -1,3 +1,7 @@
+//cvs.js canvas apis
+
+
+
 define(function(require,exports) {
 	var data = require('./data');
 
@@ -36,6 +40,7 @@ define(function(require,exports) {
 		var _h = parent.clientHeight;
 		canvas.width = _w;
 		canvas.height = _h;
+		exports.render();
 	};	
 
 	exports.addPage = function(page){

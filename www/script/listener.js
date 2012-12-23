@@ -13,6 +13,7 @@ define(function(require,exports){
 		exports._initFileEvent();
 		exports._initBtnEvents();
         exports._initCanvasEvents();
+        exports._initOtherEvents();
 	};
 
 	exports.addBtnEvent = function(query,fun,type){
@@ -129,6 +130,14 @@ define(function(require,exports){
                 // exports.zoom(e,sp1,sp2,mp1,mp2);
             }
         });
+    };
+
+
+
+    exports._initOtherEvents = function(){
+        window.addEventListener('resize',function(){
+            cvs.resize();
+        },false);
     };
 
 });

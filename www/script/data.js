@@ -30,13 +30,21 @@ define(function(require,exports){
 			}
 		}
 		if(index !== undefined){
+			PageObj.pages.forEach(function(_page){
+				if(_page.buttons){
+					_page.buttons.forEach(function(_btn){
+						if(_btn.link === id){
+							_btn.link = null;
+						}
+					});
+				}
+			});
 			PageObj.pages.splice(index,1);
 			PageObj.stamp = Date.now();
 		}
 	};
 
 	//通过id删除页面。
-	//todo 删除页面的时候 要找到关联button 并删除。
 	exports.removeButton = function(page,button){
 		var index;
 		for(var n = page.buttons.length-1;n>=0;n--){
