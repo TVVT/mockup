@@ -1,2 +1,10 @@
 #ignore .DS_Store
 .DS_Store*
+
+
+#node modules 
+server/node_modules
+
+#Generate files
+www/m
+

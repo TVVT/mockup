@@ -3,6 +3,8 @@ define(function(require,exports){
     var data = require('./data');
 	var ui = require('./ui');
     var cvs = require('./cvs');
+    var server = require('./server');
+
 	var doc = document;
 	var FU = doc.getElementById('dragArea');
 
@@ -35,6 +37,10 @@ define(function(require,exports){
                 data.addPage();
             }
             FU.style.backgroundImage = '';
+        });
+
+        exports.addBtnEvent('#submit',function(){
+            server.addPage();
         });
 	};
 
