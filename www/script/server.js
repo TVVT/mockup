@@ -15,11 +15,10 @@ define(function(require,exports) {
 
 		data.PageObj.pages.forEach(function(page){
 			files.push({id:page.id,file:page.file});
-			otherInfos.push({id:page.id,buttons:page.buttons});
+			otherInfos.push({id:page.id,buttons:page.buttons,w:page.w,h:page.h});
 		});
 
 		var formdata = new FormData();
-
 		files.forEach(function(_file){
 			formdata.append('file_' + _file.id , _file.file);
 		});

@@ -15,7 +15,6 @@ app.listen(8002);
 
 console.log('server start at ' + __dirname +',@port 8002');
 
-
 app.post('/mockup', function(req,res){
 	console.log('post mockup form');
 	var form = new formidable.IncomingForm();
@@ -27,12 +26,19 @@ app.post('/mockup', function(req,res){
     var _path = __dirname + '/../www/m/' + _stamp
     
   	mkdir(_path);
+
+    var Pages = [];
+
     form.on('field',function(field,value){
-    	console.log('got a field:' + value);
+      if(field == 'other'){
+        var obj = JSON.parse(value);
+        obj.forEach(function(_page){
+          Pages.push(_page);
+        });
+      }
     }).on('file',function(field,file){
       var type = file.type;
       var file_id = field.split('_')[1];
-      console.log(file_id);
             var suffix;
             switch(type){
                 case 'image/jpeg' :
@@ -47,10 +53,15 @@ app.post('/mockup', function(req,res){
             }
         fs.rename(file.path , _path + '/' + file_id  + suffix);
     	 console.log('i got a file,man!');
+       Pages.forEach(function(_page){
+          if(file_id == _page.id){
+            _page.src = file_id + suffix; 
+          }
+       });
     }).on('end',function(){
       var content = fs.readFileSync(__dirname + '/iphone.jade').toString();
       var buff = jade.compile(content);
-      var html = buff({ title: 'async-flow' });
+      var html = buff({Pages:Pages});
       fs.writeFileSync(_path + '/index.html', html);
     	res.end(JSON.stringify({'w':_stamp}));
     });

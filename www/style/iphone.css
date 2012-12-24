@@ -1,0 +1,15 @@
+*{margin: 0;padding: 0;}
+body{}
+
+.page{
+	width: 320px;
+	height: 480px;
+	position: relative;
+}
+
+.button{
+	position: absolute;
+}
+
+
+
