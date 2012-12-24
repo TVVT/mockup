@@ -48,10 +48,16 @@ sub,sup{font-size: 12px;}
 }
 
 .preview{
-	width: 320px;
-	height: 480px;
+	height: 40px;
+	line-height: 40px;
+	width: 100%;
 	position: fixed;
-	top:100px;
-	left: 0;
-	background: #f3f3f3;
+	background: #333;
+	bottom: 0;
+	color: #fff;
+}
+
+.preview a{
+	text-decoration: underline;
+	color: #fff;
 }

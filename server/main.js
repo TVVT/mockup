@@ -10,22 +10,28 @@ app.set('view options', {
   layout: false
 });
 
-
 app.listen(8002);
 
 console.log('server start at ' + __dirname +',@port 8002');
 
-app.post('/mockup', function(req,res){
+app.post('/mockup/:id?', function(req,res){
+
 	console.log('post mockup form');
 	var form = new formidable.IncomingForm();
 	form.uploadDir = __dirname + '/../www/tmp';
   	form.encoding = 'binary';
 
-  	var _stamp = Date.now();
+  	var _stamp ;
 
-    var _path = __dirname + '/../www/m/' + _stamp
-    
-  	mkdir(_path);
+    var id = req.params.id;
+    if(!id){
+      _stamp = Date.now();
+    }else{
+      _stamp = id;
+    }
+
+    var _path = __dirname + '/../www/m/' + _stamp;
+    mkdir(_path);
 
     var Pages = [];
 
@@ -35,6 +41,8 @@ app.post('/mockup', function(req,res){
         obj.forEach(function(_page){
           Pages.push(_page);
         });
+      }else if(field == 'id'){
+        _stamp = value;
       }
     }).on('file',function(field,file){
       var type = file.type;
@@ -63,7 +71,7 @@ app.post('/mockup', function(req,res){
       var buff = jade.compile(content);
       var html = buff({Pages:Pages});
       fs.writeFileSync(_path + '/index.html', html);
-    	res.end(JSON.stringify({'w':_stamp}));
+    	res.end(JSON.stringify({'id':_stamp}));
     });
 
    form.parse(req, function(err, fields, files) {
