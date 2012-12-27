@@ -1,7 +1,6 @@
 //cvs.js canvas apis
 
 
-
 define(function(require,exports) {
 	var data = require('./data');
 
@@ -88,20 +87,26 @@ define(function(require,exports) {
 	exports._drawPage = function(page){
 		var titleHeight = 20;
 		ctx.save()
-		ctx.fillStyle = '#f3f3f3';
 		ctx.drawImage(page.img,page.x,page.y + titleHeight);
 
 		ctx.save();
+		ctx.fillStyle = '#f3f3f3';
 		ctx.shadowBlur = 5;
 		ctx.shadowColor = 'rgba(0,0,0,0.3)';
 		ctx.fillRect(page.x,page.y,page.w,titleHeight);
+		ctx.fillRect(page.x,page.y+titleHeight+page.h,page.w,titleHeight);
 		ctx.restore();
 
 		if(page.hover){
 			ctx.strokeStyle = 'red';
 		}
 		ctx.lineWidth = 1;
-		ctx.strokeRect(page.x,page.y,page.w,page.h+titleHeight);
+		ctx.strokeRect(page.x,page.y,page.w,page.h+titleHeight+titleHeight);
+		ctx.restore();
+
+		ctx.save();
+		ctx.fillText(page.file.name,page.x+10,page.y+15,page.w-10);
+		ctx.fillText('w:' + page.w + 'px , h:' + page.h +'px',page.x+10,page.y+page.h+titleHeight+15,page.w-10);
 		ctx.restore();
 
 		if(page.buttons){
@@ -110,7 +115,7 @@ define(function(require,exports) {
 				if(btn.link){
 					var _page = data.getPageById(btn.link);
 					if(_page){
-						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2);
+						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2+titleHeight);
 					}
 				}
 			});

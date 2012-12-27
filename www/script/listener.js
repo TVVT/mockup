@@ -71,9 +71,17 @@ define(function(require,exports){
             addPage(0);
 		};
 
-        Add.addEventListener('change',function(){
-            var files = Add.files;
-            drawFile(files);
+        Add.addEventListener('click',function(){
+            var _input = doc.createElement('input');
+            _input.setAttribute('type','file');
+            _input.setAttribute('multiple','multiple');
+            _input.setAttribute('accept','image/*');
+            _input.click();
+
+            _input.addEventListener('change',function(){
+                var files = _input.files;
+                drawFile(files);
+            });
         });
 
         FU.addEventListener('dragenter', function(e) {
