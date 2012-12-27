@@ -1,6 +1,8 @@
 var doc = document;
 
-init = function(){
+var $ = function(query){return doc.querySelector(query);};
+
+var init = function(){
 	var _page = doc.querySelector('.page');
 	_page.style.display="";
 
@@ -12,11 +14,18 @@ init = function(){
 			var _link = this.getAttribute('link');
 			if(!!_link){
 				this.parentNode.style.display = "none";
-				doc.querySelector('#page_' + _link).style.display = ""; 
+				var _linkedPage = $('#page_' + _link);
+				if(_linkedPage){
+					_linkedPage.style.display = "";
+					var title = _linkedPage.getAttribute("name");
+					if(title){
+						doc.title = title + '- eizia mockup';
+					}
+				}
 			}
+
 		});
 	}
-
 };
 
 init();

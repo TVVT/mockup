@@ -64,22 +64,21 @@ app.post('/mockup/:id?', function(req,res){
             }
         fs.rename(file.path , _path + '/' + file_id  + suffix);
     	 console.log('i got a file,man!');
-       Srcs.push({id:file_id,suffix:suffix});
+       Srcs.push({id:file_id,suffix:suffix,name:file.name});
     }).on('end',function(){
 
       Pages.forEach(function(_page){
           Srcs.forEach(function(_src){
             if(_src.id == _page.id){
               _page.src = _src.id + _src.suffix;
+              _page.name = _src.name;
             }
           });
       });
 
-
-
       var content = fs.readFileSync(__dirname + '/iphone.jade').toString();
       var buff = jade.compile(content);
-      var html = buff({Pages:Pages});
+      var html = buff({Pages:Pages,title:Srcs[0].name + '- eizia mockup'});
       fs.writeFileSync(_path + '/index.html', html);
     	res.end(JSON.stringify({'id':_stamp}));
     });

@@ -35,6 +35,20 @@ define(function(require,exports) {
 			url = url + id;
 		}
 		var xhr = new XMLHttpRequest();
+		var upload = xhr.upload;
+
+        upload.addEventListener("progress", function (ev) {
+            if (ev.lengthComputable) {
+				ui.showLoading(ev.loaded/ev.total);
+            }
+        }, false);
+
+        upload.addEventListener("error", function (ev) {alert('error!sorry:(');}, false);
+
+	    upload.addEventListener("load", function (ev) {
+            ui.hideLoading();
+        }, false);
+
 	    xhr.onreadystatechange = function(){
 	        if(xhr.readyState === 4){
 	        	inSubmit = false;
@@ -51,6 +65,7 @@ define(function(require,exports) {
 	        	}
 	        }
 	  	};
+
 	  	xhr.open('POST',url); //url 是表单的提交地址。
 	    xhr.send(formdata);
 	};

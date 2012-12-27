@@ -36,5 +36,14 @@ define(function(require,exports) {
 		dom.innerHTML = _inner;
 	};
 
+	exports.showLoading = function(persent){
+		exports.DomIsShow('.load',true);
+		doc.querySelector('.load .inner').style['backgroundSize'] = persent*100 + '% 100%,100% 100%';
+	};
+
+	exports.hideLoading = function(persent){
+		exports.DomIsShow('.load',false);
+	};
+
 
 });

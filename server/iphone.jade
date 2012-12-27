@@ -5,15 +5,16 @@ html
   meta(name="viewport" , content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no")
   meta(name="apple-mobile-web-app-capable" , content="yes")
   meta(name="apple-mobile-web-app-status-bar-style" , content="black")
-  title iphone mockup beta
+  title=title
   link(rel="stylesheet",href="../../style/iphone.css")
  body
   #main
   - for (var key in Pages)
    - var page = Pages[key]
-   .page(style="display:none;background-image:url(" + page.src + ");width:" + page.w + "px;" + "height:" + page.h + "px;" , id="page_" + Pages[key].id)
+   .page(style="display:none;background-image:url(" + page.src + ");width:" + page.w + "px;" + "height:" + page.h + "px;" , id="page_" + page.id , name=page.name)
     - for (var i in page.buttons)
      - var button = page.buttons[i]
      .button(style="width:" + button.w + "px;height:" + button.h + "px;left:" + button.x + "px;top:" + button.y+"px;",link=button.link)
 
   script(src="../../script/iphone.js")
+  script(src="../../script/ga.js")
