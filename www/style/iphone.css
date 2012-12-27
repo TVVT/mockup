@@ -1,6 +1,4 @@
 *{margin: 0;padding: 0;}
-body{}
-
 .page{
 	width: 320px;
 	height: 480px;
@@ -9,6 +7,11 @@ body{}
 
 .button{
 	position: absolute;
+	cursor: pointer;
+}
+
+.button:active{
+	opacity: 0.8;
 }
 
 

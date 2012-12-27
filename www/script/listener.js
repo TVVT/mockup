@@ -6,7 +6,8 @@ define(function(require,exports){
     var server = require('./server');
 
 	var doc = document;
-	var FU = doc.getElementById('dragArea');
+	var FU = doc.getElementById('canvas');
+    var Add = doc.getElementById('add');
 
     var objectURL;
 
@@ -29,7 +30,6 @@ define(function(require,exports){
 	};
 
 	exports._initBtnEvents = function(){
-		exports.addBtnEvent('#add',function(e){ui.DomIsShow('#newPage',true);});
 		exports.addBtnEvent('#newPageFinish',function(e){
             ui.DomIsShow('#newPage',false);
             ui.restoreInner('#dragArea');
@@ -46,43 +46,38 @@ define(function(require,exports){
 
 	exports._initFileEvent = function(){
 		if(!FU){return false;}
+		var drawFile = function(files){
+            var objUrls = [];
 
-		var drawFile = function(file){
-            objectURL && window.webkitURL.revokeObjectURL(objectURL); //将之前的从内存中清空掉。
-            objectURL = window.webkitURL.createObjectURL(file);
-            
-            var _img = new Image();
-            _img.src = objectURL;
-            _img.onload = function(){
-                var _w = _img.width;
-                var _h = _img.height;
-                if(_w !== 320){
-                    alert('please cut your image to 320px;');
-                    return false;
-                }else{
-                    FU.style.border = '';
-                    ui.changeInner('#dragArea','');
-                    FU.style.backgroundImage = 'url(' + objectURL +')';
+            for(var n=0;n<files.length;n++){
+                var file = files[n];
+                objUrls.push(window.webkitURL.createObjectURL(file));
+            }
+
+            var addPage = function(n){
+                if(n >= objUrls.length){return false;}
+                var _img = new Image();
+                _img.src = objUrls[n];
+                _img.onload = function(){
+                    var _w = _img.width;
+                    var _h = _img.height;
                     var id = Date.now();
-                    data.changeCurrent({'id':id,'file':file,'img':_img,'h':_h,'w':_w});
+                    data.changeCurrent({'id':id,'file':files[n],'img':_img,'h':_h,'w':_w});
+                    data.addPage();
+                    window.webkitURL.revokeObjectURL(objUrls[n]);
+                    addPage(n+1);
                 }
             }
+            addPage(0);
 		};
 
-		FU.addEventListener('dblclick',function(){
-            var _input = doc.createElement('input');
-            _input.setAttribute('type','file');
-            _input.setAttribute('accept','image/*');
-            _input.click();
-            _input.addEventListener('change',function(e){
-                var file = _input.files[0];
-                drawFile(file);
-            });
+        Add.addEventListener('change',function(){
+            var files = Add.files;
+            drawFile(files);
         });
 
         FU.addEventListener('dragenter', function(e) {
             e.preventDefault();
-            this.style.border = '1px solid red';
         }, false); 
         FU.addEventListener('dragleave', function(e) {
             e.preventDefault();
@@ -93,13 +88,8 @@ define(function(require,exports){
         }, false);
         FU.addEventListener('drop', function(e) {
             e.preventDefault();
-            var file = e.dataTransfer.files[0];
-            var type = file.type;
-            if(type.match('image')){
-                drawFile(file);
-            }else{
-                alert('please drag a image!');
-            }
+            var files = e.dataTransfer.files;
+            drawFile(files);
         }, false);
 	};
 
