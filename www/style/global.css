@@ -7,16 +7,16 @@ header{
 	height: 32px;
 	overflow: hidden;
 	padding-left: 20px;
-	background-image:-webkit-linear-gradient(top,#333,#444);
+	background-image:-webkit-linear-gradient(top,#777,#666);
 	color: #fff;
 	box-shadow: 0 0 3px #333;
 }
 header h1{display: inline-block;margin-right:10px; }
 header span{font-weight:normal;font-size:14px;display: inline-block;height: 100%;line-height:32px;padding: 0 20px;cursor: pointer;vertical-align: top;}
-header span:hover{background: #333;box-shadow: 0 0 1px #fff inset;}
-footer{bottom: 0;text-align: center;background-image:-webkit-linear-gradient(top,#333,#444);}
+header span:hover{background: #999;box-shadow: 0 0 1px #fff inset;}
+footer{bottom: 0;text-align: center;background-image:-webkit-linear-gradient(top,#777,#666);}
 footer:before{content: "";display: block;top:0;left:0;height:50%;width:100%;position: absolute;border-bottom:1px solid #999;z-index: 0}
-footer span{background-image:-webkit-linear-gradient(top,#333,#444);padding: 0 5px;position: relative;z-index: 10;color: #fff;}
+footer span{background-image:-webkit-linear-gradient(top,#777,#666);padding: 0 5px;position: relative;z-index: 10;color: #fff;}
 sub,sup{font-size: 12px;}
 .hide{display: none !important;}
 
