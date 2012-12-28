@@ -3,6 +3,7 @@
 
 define(function(require,exports) {
 	var data = require('./data');
+	var scale = 1.0;
 
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
@@ -63,6 +64,11 @@ define(function(require,exports) {
 	exports.render = function(){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		var hoverPages = [];
+
+		ctx.save();
+		ctx.scale(scale,scale);
+
+
 		data.PageObj.pages.forEach(function(el,index){
 			if(el.x === undefined){el.x = 10;}
 			if(el.y === undefined){el.y = 30;}
@@ -80,6 +86,8 @@ define(function(require,exports) {
 		if(data.PageObj.pages.length > 0){
 			exports._drawArrow(0,0,data.PageObj.pages[0].x+data.PageObj.pages[0].w/2,data.PageObj.pages[0].y);
 		}
+
+		ctx.restore();
 
 	};
 
@@ -133,7 +141,10 @@ define(function(require,exports) {
 		ctx.stroke();
 		ctx.fillStyle = "red";
 		ctx.closePath();
-		ctx.arc(ex,ey,5,0,360);
+
+		ctx.beginPath();
+		ctx.arc(ex,ey,4,0,360);
+		ctx.stroke();
 		ctx.fill();
 		ctx.restore();
 	};
@@ -270,6 +281,19 @@ define(function(require,exports) {
 			}
 		}
 		return button;
+	};
+
+	exports.zoomIn = function(){
+		exports._zoom(1.1);
+	};
+
+	exports.zoomOut = function(){
+		exports._zoom(0.9);
+	};
+
+	exports._zoom = function(s){
+		scale = scale * s;
+		exports.render();
 	};
 
 

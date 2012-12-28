@@ -12,9 +12,12 @@ define(function(require,exports){
 	//添加页面时 更改一下当前时间戳。
 	exports.addPage = function(){
 		var obj = {};
+		var ll = PageObj.pages.length;
 		for(var name in current){
 			obj[name] = current[name];
 		}
+		obj.x = ll*20;
+		obj.y = ll*20;
 		PageObj.pages.push(obj);
 		PageObj.stamp = Date.now();
 	};

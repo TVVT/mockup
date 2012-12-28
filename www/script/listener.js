@@ -11,6 +11,13 @@ define(function(require,exports){
 
     var objectURL;
 
+    var VENDOR = (/webkit/i).test(navigator.appVersion) ? 'webkit' :
+                (/firefox/i).test(navigator.userAgent) ? 'Moz' :
+                    (/trident/i).test(navigator.userAgent) ? 'ms' :
+                        'opera' in window ? 'o' : '';
+
+    var WHEEL_EV = VENDOR == 'Moz' ? 'DOMMouseScroll' : 'mousewheel';
+
     // var window.URL.revokeObjectURL(objectURL);
 	exports.init = function(){
 		exports._initFileEvent();
@@ -105,10 +112,6 @@ define(function(require,exports){
     exports._initCanvasEvents = function(){
         var canvas = document.getElementById('canvas');
 
-        var canvasMove = function(e,dir,disX,disY,x,y){
-            console.log(x);
-        };
-
         touch({
             element : canvas,
             click : function(x,y){
@@ -134,6 +137,20 @@ define(function(require,exports){
                 // exports.zoom(e,sp1,sp2,mp1,mp2);
             }
         });
+
+        canvas.addEventListener(WHEEL_EV,function(e){
+            e.preventDefault();
+            // for firefox wheel。
+            var _delta = e.wheelDelta ? e.wheelDelta : -(e.detail);
+            if(_delta > 0 ){//down
+                cvs.zoomIn();
+            }else if(_delta < 0){//up
+                cvs.zoomOut();
+            }
+        },false);
+
+
+
     };
 
 
