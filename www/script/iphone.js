@@ -1,3 +1,4 @@
+//main js for create pages.
 var doc = document;
 
 var $ = function(query){return doc.querySelector(query);};

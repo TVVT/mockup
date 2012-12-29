@@ -9,6 +9,11 @@ define(function(require,exports){
 	var FU = doc.getElementById('canvas');
     var Add = doc.getElementById('add');
 
+
+    var OURL = window.URL || window.webkitURL;
+    // console.log('winurl='+myURL);
+    // var fileURL = myURL.createObjectURL(file);
+
     var objectURL;
 
     var VENDOR = (/webkit/i).test(navigator.appVersion) ? 'webkit' :
@@ -58,7 +63,7 @@ define(function(require,exports){
 
             for(var n=0;n<files.length;n++){
                 var file = files[n];
-                objUrls.push(window.webkitURL.createObjectURL(file));
+                objUrls.push(OURL.createObjectURL(file));
             }
 
             var addPage = function(n){
@@ -71,7 +76,7 @@ define(function(require,exports){
                     var id = Date.now();
                     data.changeCurrent({'id':id,'file':files[n],'img':_img,'h':_h,'w':_w});
                     data.addPage();
-                    window.webkitURL.revokeObjectURL(objUrls[n]);
+                    OURL.revokeObjectURL(objUrls[n]);
                     addPage(n+1);
                 }
             }
@@ -148,8 +153,6 @@ define(function(require,exports){
                 cvs.zoomOut();
             }
         },false);
-
-
 
     };
 

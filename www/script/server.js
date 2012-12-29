@@ -4,7 +4,8 @@ define(function(require,exports) {
 	console.log('server.js');
 
 	var data = require('./data');
-	var host = window.location.origin;
+	var host = window.location.protocol + '//' + window.location.host;
+
 	var inSubmit = false;
 
 	var ui = require('ui');
