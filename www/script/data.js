@@ -16,8 +16,8 @@ define(function(require,exports){
 		for(var name in current){
 			obj[name] = current[name];
 		}
-		obj.x = ll*20;
-		obj.y = ll*20;
+		obj.x = ll*20+20;
+		obj.y = ll*20+20;
 		PageObj.pages.push(obj);
 		PageObj.stamp = Date.now();
 	};
