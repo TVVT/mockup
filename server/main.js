@@ -82,7 +82,8 @@ app.post('/mockup/:id?', function(req,res){
       fs.writeFileSync(_path + '/index.html', html);
     	res.end(JSON.stringify({'id':_stamp}));
     });
-
+    
+   form.encoding = 'utf-8';
    form.parse(req, function(err, fields, files) {
 	    if (err) {
 	      console.log(err);
@@ -97,6 +98,5 @@ function mkdir(path, root) {
         //dir wasn't made, something went wrong
         if(!fs.statSync(root).isDirectory()) throw new Error(e);
     }
-
     return !dirs.length||mkdir(dirs.join('/'), root);
 }

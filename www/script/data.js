@@ -63,8 +63,6 @@ define(function(require,exports){
 		}
 	};
 
-
-
 	exports.changeCurrent = function(obj){
 		for(var name in obj){
 			current[name] = obj[name];
