@@ -68,7 +68,6 @@ define(function(require,exports) {
 		ctx.save();
 		ctx.scale(scale,scale);
 
-
 		data.PageObj.pages.forEach(function(el,index){
 			if(el.x === undefined){el.x = 10;}
 			if(el.y === undefined){el.y = 30;}
@@ -84,7 +83,7 @@ define(function(require,exports) {
 			});
 		}
 		if(data.PageObj.pages.length > 0){
-			exports._drawArrow(0,0,data.PageObj.pages[0].x+data.PageObj.pages[0].w/2,data.PageObj.pages[0].y);
+			exports._drawArrow(0,0,data.PageObj.pages[0].x+data.PageObj.pages[0].w/2,data.PageObj.pages[0].y,null,data.PageObj.pages[0].color);
 		}
 
 		ctx.restore();
@@ -94,7 +93,6 @@ define(function(require,exports) {
 	//draw a page.
 	exports._drawPage = function(page){
 		var titleHeight = 20;
-		ctx.save()
 		ctx.drawImage(page.img,page.x,page.y + titleHeight);
 
 		ctx.save();
@@ -105,10 +103,15 @@ define(function(require,exports) {
 		ctx.fillRect(page.x,page.y+titleHeight+page.h,page.w,titleHeight);
 		ctx.restore();
 
+
+		ctx.save();
 		if(page.hover){
 			ctx.strokeStyle = 'red';
+			ctx.lineWidth = 2;
+		}else{
+			ctx.strokeStyle = page.color;
+			ctx.lineWidth = 1;
 		}
-		ctx.lineWidth = 1;
 		ctx.strokeRect(page.x,page.y,page.w,page.h+titleHeight+titleHeight);
 		ctx.restore();
 
@@ -123,7 +126,7 @@ define(function(require,exports) {
 				if(btn.link){
 					var _page = data.getPageById(btn.link);
 					if(_page){
-						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2+titleHeight);
+						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2+titleHeight,page.color,_page.color);
 					}
 				}
 			});
@@ -132,14 +135,22 @@ define(function(require,exports) {
 
 
 	//draw arrows
-	exports._drawArrow = function(sx,sy,ex,ey){
+	exports._drawArrow = function(sx,sy,ex,ey,startColor,endColor){
 		ctx.save();
 		ctx.beginPath();
-		ctx.strokeStyle = "#333";
+
 		ctx.moveTo(sx,sy);
 		ctx.lineTo(ex,ey);
+
+		if(startColor){
+			ctx.strokeStyle = startColor;
+		}
 		ctx.stroke();
-		ctx.fillStyle = "red";
+		if(endColor){
+			ctx.fillStyle = endColor;
+		}else{
+			ctx.fillStyle = "red";
+		}
 		ctx.closePath();
 
 		ctx.beginPath();
@@ -147,6 +158,8 @@ define(function(require,exports) {
 		ctx.stroke();
 		ctx.fill();
 		ctx.restore();
+
+
 	};
 
 	//绘制按钮。
@@ -156,6 +169,13 @@ define(function(require,exports) {
 		ctx.fillRect(sx,sy,w,h);
 		ctx.strokeRect(sx,sy,w,h);
 		ctx.restore();
+	};
+
+	//绘制开始方块
+	exports._drawStart = function(){
+
+
+
 	};
 
 	//鼠标开始事件。

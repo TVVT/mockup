@@ -9,10 +9,7 @@ define(function(require,exports){
 	var FU = doc.getElementById('canvas');
     var Add = doc.getElementById('add');
 
-
     var OURL = window.URL || window.webkitURL;
-    // console.log('winurl='+myURL);
-    // var fileURL = myURL.createObjectURL(file);
 
     var objectURL;
 
@@ -23,7 +20,6 @@ define(function(require,exports){
 
     var WHEEL_EV = VENDOR == 'Moz' ? 'DOMMouseScroll' : 'mousewheel';
 
-    // var window.URL.revokeObjectURL(objectURL);
 	exports.init = function(){
 		exports._initFileEvent();
 		exports._initBtnEvents();
@@ -120,7 +116,6 @@ define(function(require,exports){
         touch({
             element : canvas,
             click : function(x,y){
-                // exports._click(x,y);
             },
             start : function(e,x,y){
                 cvs.start(e,x,y);
@@ -133,17 +128,17 @@ define(function(require,exports){
             },
             end : function(){
                 cvs.end();
-                // exports._end();
             },
             startZoom : function(){
-                // exports.startZoom();
+
             },
             zoom : function(e,sp1,sp2,mp1,mp2){
-                // exports.zoom(e,sp1,sp2,mp1,mp2);
+
             }
         });
 
         canvas.addEventListener(WHEEL_EV,function(e){
+            return false;
             e.preventDefault();
             // for firefox wheel。
             var _delta = e.wheelDelta ? e.wheelDelta : -(e.detail);
@@ -155,8 +150,6 @@ define(function(require,exports){
         },false);
 
     };
-
-
 
     exports._initOtherEvents = function(){
         window.addEventListener('resize',function(){

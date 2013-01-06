@@ -18,6 +18,8 @@ define(function(require,exports){
 		}
 		obj.x = ll*20+20;
 		obj.y = ll*20+20;
+		obj.color = 'rgb(' + ~~(Math.random()*255) + ',' + ~~(Math.random()*255) + ',' + ~~(Math.random()*255) + ')';
+		console.log(obj.color);
 		PageObj.pages.push(obj);
 		PageObj.stamp = Date.now();
 	};
