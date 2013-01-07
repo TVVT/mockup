@@ -126,7 +126,9 @@ define(function(require,exports) {
 				if(btn.link){
 					var _page = data.getPageById(btn.link);
 					if(_page){
-						exports._drawArrow(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,_page.x,_page.y + _page.h/2+titleHeight,page.color,_page.color);
+						var p0 = exports._lineRectInter(page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2,btn.w,btn.h,_page.x + _page.w/2,_page.y + _page.h/2);
+						var p1 = exports._lineRectInter(_page.x + _page.w/2,_page.y + _page.h/2,_page.w,_page.h,page.x+btn.x + btn.w/2,page.y+btn.y+titleHeight + btn.h/2);
+						exports._drawArrow(p0.x,p0.y,p1.x,p1.y,page.color,_page.color);
 					}
 				}
 			});
@@ -314,6 +316,29 @@ define(function(require,exports) {
 	exports._zoom = function(s){
 		scale = scale * s;
 		exports.render();
+	};
+
+
+	// Point of intersection
+	exports._lineRectInter = function(sx,sy,w,h,ex,ey){
+		if(ex==sx){
+			return {x:ex,y:(ey>sy? sy+h/2 : sy-h/2)};
+		}
+		var kl = (ey-sy)/(ex-sx);
+		var kr = h/w;
+
+		if(Math.abs(kl)<kr){
+			var x = ex > sx ? sx + w/2 : sx -w/2;
+			var y = sy + (x-sx)*(ey-sy)/(ex-sx);
+			return {x : x,y:y}
+		}else{
+			var y = ey > sy ? sy + h/2 : sy - h/2;
+			var x = sx + (y-sy)*(ex-sx)/(ey-sy);
+			return {x:x,y:y}
+		}
+
+
+
 	};
 
 
