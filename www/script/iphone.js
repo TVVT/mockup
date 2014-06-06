@@ -20,7 +20,7 @@ var init = function(){
 					_linkedPage.style.display = "";
 					var title = _linkedPage.getAttribute("name");
 					if(title){
-						doc.title = title + '- eizia mockup';
+						doc.title = title + '- TvvT mockup';
 					}
 				}
 			}

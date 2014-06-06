@@ -78,7 +78,7 @@ app.post('/mockup/:id?', function(req,res){
 
       var content = fs.readFileSync(__dirname + '/iphone.jade').toString();
       var buff = jade.compile(content);
-      var html = buff({Pages:Pages,title:Srcs[0].name + '- eizia mockup'});
+      var html = buff({Pages:Pages,title:Srcs[0].name + '- TvvT mockup'});
       fs.writeFileSync(_path + '/index.html', html);
     	res.end(JSON.stringify({'id':_stamp}));
     });
