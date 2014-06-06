@@ -62,7 +62,7 @@ define(function(require,exports) {
 	        			' You can get your mockup at : &nbsp;&nbsp;&nbsp;'+
 	        			'<a target="_blank" href=' + host + '/m/' + id + '>' + host + '/m/' + id + '</a>' + 
 	        			'&nbsp;&nbsp;&nbsp;' + 
-	        			'or scan <a target="_blank" href="http://chart.apis.google.com/chart?cht=qr&chl='+host + '/m/' + id + '&chs=200x200">QRcode</a>');
+	        			'or scan <a target="_blank" href="http://192.168.112.94:3000?qr&url='+host + '/m/' + id + '">QRcode</a>');
 	        	}
 	        }
 	  	};
