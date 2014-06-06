@@ -1,0 +1,21 @@
+{
+  "name": "mockup",
+  "version": "0.0.0",
+  "description": "make & share mockups",
+  "main": "main.js",
+  "dependencies": {
+    "formidable": "~1.0.11",
+    "jade": "~0.28.1",
+    "express": "~3.0.6"
+  },
+  "devDependencies": {
+    "express" : "*",
+    "jade" : "*",
+    "formidable" : "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TvvT",
+  "license": "BSD-2-Clause"
+}
